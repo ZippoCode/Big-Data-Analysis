@@ -1,0 +1,77 @@
+import pandas as pd
+import scipy.special
+
+
+def frequenza(dataset: pd.DataFrame, itemset: list, values):
+    """
+    
+    :param dataset:
+    :param itemset:
+    :param values:
+    :return:
+    """
+    series = dataset[dataset[itemset] == values].groupby(itemset).size()
+    return series.values
+
+
+def support(dataset: pd.DataFrame, itemset1, values):
+    """
+
+    :param dataset:
+    :param itemset1:
+    :param itemset2:
+    :param values:
+    :return:
+    """
+    freq = frequenza(dataset, itemset1, values)
+    num_rows = dataset.shape[0]
+    return freq / num_rows
+
+
+def confidenza(dataset, itemset1, itemset2, values):
+    """
+
+    :param dataset:
+    :param itemset1:
+    :param itemset2:
+    :param values:
+    :return:
+    """
+    frequenza1 = frequenza(dataset, itemset1 + itemset2, values)
+    frequenza2 = frequenza(dataset, itemset1, values)
+    return frequenza1 / frequenza2
+
+
+def interesse(dataset: pd.DataFrame, itemset1, values):
+    """
+
+    :param dataset:
+    :param itemset1:
+    :param itemset2:
+    :param values:
+    :return:
+    """
+    freq = frequenza(dataset, itemset1, values)
+    sup = support(dataset, itemset1, values)
+    return freq - sup
+
+
+def coefficiente_biloniame(dataset, itemset):
+    return scipy.special.binom(dataset.shape[0], len(itemset))
+
+
+if __name__ == '__main__':
+    a = pd.Series([1, 1, 0, 0, 1, 0, 1, 1, 1, 1])
+    b = pd.Series([0, 1, 1, 1, 1, 1, 0, 1, 1, 0])
+    c = pd.Series([1, 0, 0, 0, 1, 1, 1, 0, 1, 0])
+    e = pd.Series([0, 1, 1, 1, 0, 0, 0, 0, 0, 0])
+    f = pd.Series([0, 0, 0, 0, 0, 0, 0, 1, 1, 1])
+
+    dataset = pd.DataFrame({'A': a, 'B': b, 'C': c, 'E': e, 'F': f})
+    print(frequenza(dataset, ['A', 'C'], 1))
+    print(frequenza(dataset, ['B'], 1))
+    print(frequenza(dataset, ['A', 'B', 'C'], 1))
+    print(confidenza(dataset, ['A', 'B'], ['C'], 1))
+    print(support(dataset, ['A', 'B', 'C'], 1))
+    print(interesse(dataset, ['A', 'B', 'C'], 1))
+    print(coefficiente_biloniame(dataset, ['A', 'B']))
