@@ -1,8 +1,8 @@
 Appelli Big Data Analysis
 =====================
 
-Qui dentro sono racchiusi tutte le soluzioni delle tracce del compito reperibili su *Dolly*. 
-
+Qui dentro sono racchiusi tutte le soluzioni delle tracce del compito reperibili su *Dolly*.
+Sono state implementate tutte le funzioni con la descrizione dei vari metodi.
 Contenuto cartella:
 
 - Traccia appetto
